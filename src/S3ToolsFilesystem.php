@@ -9,20 +9,20 @@ class S3ToolsFilesystem extends \League\Flysystem\Filesystem
 {
 		public $diskName;
 
-    /**
-     * Constructor.
-     *
-     * @param AdapterInterface $adapter
-     * @param Config|array     $config
-     */
-    public function __construct(\League\Flysystem\AdapterInterface $adapter, $config = null)
-    {
+		/**
+		* Constructor.
+		*
+		* @param AdapterInterface $adapter
+		* @param Config|array     $config
+		*/
+		public function __construct(\League\Flysystem\AdapterInterface $adapter, $config = null)
+		{
 			// Set the diskName to whatever is in the .env file, with a default value of "s3-tools"
 			$this->diskName = env('S3_TOOLS_DISK_NAME', $this->diskName);
 
 			// Call the original/parent constructor in \League\Flysystem\Filesystem
 			parent::__construct( $adapter, $config );
-    }
+		}
 
     /**
      * @inheritdoc

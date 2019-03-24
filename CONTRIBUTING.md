@@ -1,4 +1,4 @@
-# Contributing
+# Contributing to Laravel-S3-Tools
 
 Contributions are **welcome** and will be fully **credited**.
 

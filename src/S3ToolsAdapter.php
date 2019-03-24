@@ -1,18 +1,13 @@
 <?php
 
-namespace Incursus\LaravelS3Tools;
+/**
+ * \Incursus\LaravelS3Tools\S3ToolsAdapter
+ *
+ * This file extends the Amazon AWS/S3 filesytem adapter provided by \League\Flysystem\AwsS3v3\AwsS3Adapter
+ *
+ */
 
-use Storage;
-//use Aws\Result;
-//use Aws\S3\Exception\DeleteMultipleObjectsException;
-//use Aws\S3\Exception\S3Exception;
-//use Aws\S3\Exception\S3MultipartUploadException;
-//use Aws\S3\S3Client;
-//use League\Flysystem\Adapter\AbstractAdapter;
-//use League\Flysystem\Adapter\CanOverwriteFiles;
-//use League\Flysystem\AdapterInterface;
-//use League\Flysystem\Config;
-//use League\Flysystem\Util;
+namespace Incursus\LaravelS3Tools;
 
 class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractAdapter implements CanOverwriteFiles
 {
