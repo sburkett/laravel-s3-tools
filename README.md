@@ -144,7 +144,7 @@ foreach($versions as $v)
 
 The output from the above code will appear similar to the following:
 
-```html
+```
 - Version ID: WX6q0O9qkcAcqld3DidZo2m5z68uGKnn
 - File Size: 132645 bytes
 - Is Latest Version?: 1
@@ -195,11 +195,19 @@ Without specifying a specific version, the latest version of an Object will be d
 	...
 ```
 
-TODO: Fix the issue where deleting the latest version of an object causes getObjectVersions() to fail - need to hard delete the latest version somehow via the API.
+The above operation will actually not "delete" the file from S3 if versioning is enabled for the bucket. By default, S3 will place a `DeleteMarker` for that version of the file. However, you are charged a nominal fee by Amazon for `DeleteMarker` storage. To fully delete a file, and leave no `DeleteMarker` in its place, you need to delete the specific version of the file as demonstrated below.
+
+Alternatively, you can do the following to help manage your `DeleteMarkers` in S3:
+
+- Login to the S3 Console
+- Select your Bucket
+- Open Properties
+- Click Lifecycle
+- Create a rule set to Permanently Delete `n` days after the object's creation date
 
 ### Delete a specific version of an Object
 
-However, if you specify a `versionId`, you can remove just that particular version of the object, assuming it exists:
+If you specify a `versionId`, you can delete just that particular version of the object, assuming it exists. This operation will also not leave behind a `DeleteMarker` - think of it as a "hard delete" operation.
 
 ```php
 	...
@@ -209,25 +217,57 @@ However, if you specify a `versionId`, you can remove just that particular versi
 ```
 
 ### Execute Other Amazon S3 API Commands
-TODO - evaluate this:
-Using the `Storage::command()` method, you can execute any other API call to S3 as well, and there are a great number of them. However, you will be responsible for not only passing in all of the appropriate options, but also parsing the response. All responses returned via this method are sent back to you in raw format. In some senses, this is a bit extraneous, since you could just use the offical S3 API to execute them, but I've included it here just to provide a method of consistency should you decide to use this package for other things.
+Using the `command()` method, you can execute any other API call to S3 as well, and there are a great number of them. However, you will be responsible for not only passing in all of the appropriate options, but also parsing the response. All responses returned via this method are sent back to you in raw format. In some senses, this is a bit extraneous, since you could just use the offical S3 API to execute them, but I've included it here just to provide a method of consistency should you decide to use this package for other things.
+
+Consider the following example which does the same thing as the built-in `getVersions()` method of this package:
 
 ```php
-	use Incursus\LaravelS3Tools\S3Tools;
 	...
-	$result = Storage::command('ListObjectVersions', [
+	$result = Storage::disk('s3-tools')->command('ListObjectVersions', [
+		'Prefix' => 'some/longer/S3/path/business-plan.pdf'
+	]);
+```
+
+Here is the same command above, but using a different bucket name:
+
+```
+	$result = Storage::disk('s3-tools')->command('ListObjectVersions', [
 		'Bucket' => 'MyBucketName',
 		'Prefix' => 'some/longer/S3/path/business-plan.pdf'
 	]);
+```
 
-	dd($versions);
+Here is an example of creating a new S3 bucket. Remember, bucket names in S3 must conform to DNS naming conventions, so:
 
+- Should not contain uppercase characters
+- Should not contain underscores
+- Should be between 3 and 63 characters long
+- Should not end with a dash
+- Cannot contain two, adjacent periods
+- Cannot contain dashes next to periods (e.g., "my-.bucket.com" and "my.-bucket" are invalid)
+
+```
+	$result = Storage::disk('s3-tools')->command('CreateBucket', [
+		'Bucket' => 'my-terrific-bucket-name',
+		'ACL' => 'private'
+	]);
+```
+
+Here is a final example for you. Removing multiple objects in a single API call. In this example, we delete the latest version of `myfile.png` and `business-plan.pdf`, as well as a specific version of a fictitious spreadsheet.
+
+```
+	$result = Storage::disk('s3-tools')->command('DeleteObjects', [
+		'Delete' => [
+			[ 'Key' => 'myfile.png' ],
+			[ 'Key' => 'some/longer/S3/path/business-plan.pdf' ],
+			[ 'Key' => 'some/longer/S3/path/financial-planning-spreadsheet.xlsx', 'VersionId' => 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz' ]
+		]
+	]);
 ```
 
 #### Notes on `Storage::command` Usage
 
-- When specifying the command name (e.g. `ListObjectVersions` as in the example above), be sure to use the proper spelling of the command as per the Amazon API docs. They all appear to be written in "Pascal Case". So things like `copyObject` will not work - it would need to be specified as `CopyObject`.
-- When using the `Storage::command` method, the only option value that WILL actually default is `Bucket` ... it will default to the value of `AWS_BUCKET` from your `.env` file if a bucket name isn't passed in directly.
+- When using the `Storage::command` method, the only "option" value that WILL actually default is `Bucket` ... it will default to the value of `AWS_BUCKET` from your `.env` file if a bucket name isn't passed in directly.
 
 ### Changelog
 

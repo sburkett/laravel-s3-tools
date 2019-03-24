@@ -41,11 +41,6 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 				'Key'    => $this->applyPathPrefix($fileName),
 			];
 
-			//if (isset($versionId))
-				//$options['VersionId'] = $versionId;
-			//elseif (isset($this->versionId))
-				//$options['VersionId'] = $this->versionId;
-
 			$options += $this->options;
 
 			if (isset($this->options['@http'])) {
@@ -142,8 +137,9 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 
 			$command = $this->s3Client->getCommand( 'deleteObject', $options );
 
-			$this->s3Client->execute($command);
+			$response = $this->s3Client->execute($command);
 
+			//return $response;
 			return ! $this->has($path);
 		}
 
@@ -229,4 +225,34 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 			$this->options[ $option ] = null;
 		}
 
+		/**
+			* Generic front-door method, used to call any S3 API command, not just those provided here.
+			*
+			* @param string $commandName
+			* @param array $params
+			*
+			* @return null|array
+			*
+			*/
+		public function command( $commandName, $params = [] )
+		{
+			$options = [];
+
+			if(!array_key_exists('Bucket', $params))
+			{
+				$options = [
+					'Bucket' => $this->bucket,
+				];
+			}
+
+			$options += $this->options;
+			$options += $params;
+
+			$command = $this->s3Client->getCommand( $commandName, $options );
+			$result = $this->s3Client->execute($command);
+
+			if($result) return $result;
+	
+			return null;
+		}
 }

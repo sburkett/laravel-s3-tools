@@ -86,4 +86,12 @@ class S3ToolsFilesystem extends \League\Flysystem\Filesystem
 			$this->getAdapter()->clearOption( $option );
 			return Storage::disk($this->diskName);
 		}
+
+		public function command( $commandName, $params = [] )
+		{
+			$response = $this->getAdapter()->command( $commandName, $params );
+			return $response;
+			//return Storage::disk($this->diskName);
+		}
+
 }
