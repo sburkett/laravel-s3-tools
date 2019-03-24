@@ -1,6 +1,6 @@
 {
     "name": "incursus/laravel-s3-tools",
-    "description": "This Laravel package contains additional functionality not currently in Laravel for interfacing with Amazon's S3 service.",
+    "description": "This Laravel package contains additional functionality not currently in Laravel for interfacing with Amazon's S3 service, including managing versioned objects.",
     "type": "library",
     "license": "MIT",
     "authors": [
