@@ -12,7 +12,7 @@ With this package, you'll be able to easily:
 - Set or clear Amazon S3/API option values
 - Execute other Amazon S3/API commands against your objects
 
-Other methods and conveniences may be added in the future, depending largely upon either my own needs, or suggestions from the community. Pull requests are welcome! :)
+Other methods and conveniences may be added in the future, depending largely upon either my own needs, or suggestions from the community. Pull requests, bug reports, etc. are welcome! :)
 
 NOTE: Yes, I know that you can make use of the underlying Amazon S3 API package to do these sorts of things. But I wanted the convenience of tying them into the `Storage` facade, as well as for some potential additional functionality down the road. So, if you'd rather do this:
 
