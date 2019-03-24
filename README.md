@@ -209,6 +209,44 @@ $versionId = 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz';
 $result = Storage::disk('s3-tools')->getVersion($versionId)->delete('some/longer/S3/path/business-plan.pdf');
 ```
 
+### Setting AWS/S3 API Options
+
+At times, you may need to provide additional options for a given request. The options for each API call are well-documented on [Amazon's API Reference site](https://docs.aws.amazon.com/aws-sdk-php/v3/api/index.html). As an example, consider this request which does the same thing as the built-in `getVersion()` method in this package:
+
+```php
+$result = Storage::disk('s3-tools')->setOption('VersionId', $versionString)->get('myfile.png');
+```
+
+You can also use the plural version called `setOptions()` to pass in an array of options:
+
+```php
+$options = [
+	'VersionId' => 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz',
+	'IfModifiedSince' => '2 days ago'
+];
+
+$result = Storage::disk('s3-tools')->setOptions($options)->delete('myfile.png');
+```
+
+The `clearOption()` method will reset a specific option, while the `clearOptions()` method will reset them all. If you experience any weirdness while doing complex operations into and out of S3, it may behoove you call `clearOptions()` to reset things prior to making certain API calls.
+
+```php
+
+// Retrieve a specific version of a file
+$versionId = 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz';
+$file = Storage::disk('s3-tools')->setOption('VersionId', $versionId)->get('myfile.png');
+
+// Clear out ll of our options
+$file = Storage::disk('s3-tools')->clearOptions();
+
+// or alternatively, just clear the 'VersionId' option
+//$file = Storage::disk('s3-tools')->clearOption('VersionId');
+
+// Get the latest version of another file ...
+$file = Storage::disk('s3-tools')->get('myfile.png');
+
+```
+
 ### Execute Other Amazon S3 API Commands
 Using the `command()` method, you can execute any other API call to S3 as well, and there are a great number of them. However, you will be responsible for not only passing in all of the appropriate options, but also parsing the response. All responses returned via this method are sent back to you in raw format. In some senses, this is a bit extraneous, since you could just use the offical S3 API to execute them, but I've included it here just to provide a method of consistency should you decide to use this package for other things.
 
