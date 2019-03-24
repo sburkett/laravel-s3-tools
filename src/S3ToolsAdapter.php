@@ -111,7 +111,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
     }
 
     /**
-     * 
+     * Deletes the object in S3 specified by the $path parameter, and optionally a specific 'VersionId'
      *
      * @param $path
      *
@@ -144,7 +144,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 		}
 
 		/**
-		* Check whether a file exists.
+		* Check whether a file exists, optionally with a specific 'VersionId'`
 		*
 		* @param string $path
 		*
@@ -195,9 +195,17 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 			$this->options += $options;
 		}
 
-		public function setOption( $option, $value )
+    /**
+     * Set a single option: i.e. Storage::disk('s3-tools')->setOption('VersionId', $versionId)-delete($fileName);
+     *
+     * @param string $optionName
+     * @param string $optionValue
+     *
+     * @return void
+     */
+		public function setOption( $optionName, $optionValue )
 		{
-			$this->options[ $option ] = $value;
+			$this->options[ $optionName ] = $optionValue;
 		}
 
     /**
