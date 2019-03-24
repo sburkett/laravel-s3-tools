@@ -1,0 +1,23 @@
+{
+    "name": "incursus/laravel-s3-tools",
+    "description": "This Laravel package contains additional functionality not currently in Laravel for interfacing with Amazon's S3 service.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scott Burkett",
+            "email": "scott@incurs.us"
+        }
+    ],
+		"require": {
+        "php": ">=5.5.0",
+        "aws/aws-sdk-php": "^3.0.0",
+				"league/flysystem-aws-s3-v3": "^1.0"
+    },
+		"autoload": {
+				"psr-4": {
+						"Incursus\\laravel-s3-tools\\": "src/"
+				}
+		}
+
+}
