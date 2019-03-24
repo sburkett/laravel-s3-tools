@@ -14,6 +14,33 @@ With this package, you'll be able to easily:
 
 Other methods and conveniences may be added in the future, depending largely upon either my own needs, or suggestions from the community. Pull requests are welcome! :)
 
+NOTE: Yes, I know that you can make use of the underlying Amazon S3 API package to do these sorts of things. But I wanted the convenience of tying them into the `Storage` facade, as well as for some potential additional functionality down the road. So, if you'd rather do this:
+
+```php
+// Instantiate an Amazon S3 client.
+$s3 = new S3Client([
+	'version' => 'latest',
+	'region'  => 'us-west-2'
+]);
+
+// Fetch the latest version of a file
+try {
+    $s3->putObject([
+        'Bucket' => 'my-bucket',
+        'Key'    => 'myfile.png',
+				'VersionId' => 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz'
+    ]);
+} catch (Aws\S3\Exception\S3Exception $e) {
+    echo "There was an error retrieving the file.\n";
+}
+```
+... instead of this:
+
+```php
+$file = Storage::disk('s3-tools')->getVersion('fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz')->get('myfile.png');
+```
+... then that's on you. Have fun. :)
+
 ## Requirements
 
 This package assumes you have already installed the following packages:
