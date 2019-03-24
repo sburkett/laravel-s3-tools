@@ -260,7 +260,10 @@ Here is a final example for you. Removing multiple objects in a single API call.
 		'Delete' => [
 			[ 'Key' => 'myfile.png' ],
 			[ 'Key' => 'some/longer/S3/path/business-plan.pdf' ],
-			[ 'Key' => 'some/longer/S3/path/financial-planning-spreadsheet.xlsx', 'VersionId' => 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz' ]
+			[ 
+				'Key' => 'some/longer/S3/path/financial-planning-spreadsheet.xlsx', 
+				'VersionId' => 'fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz'
+			]
 		]
 	]);
 ```
