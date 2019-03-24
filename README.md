@@ -45,9 +45,9 @@ $file = Storage::disk('s3-tools')->getVersion('fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz
 
 This package assumes you have already installed the following packages:
 
-- [league/flysystem](https://github.com/thephpleague/flysystem){:target="_blank"}
-- [league/flysystem-aws-s3-v3](https://github.com/thephpleague/flysystem-aws-s3-v3){:target="_blank"}
-- [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php){:target="_blank"}
+- [league/flysystem](https://github.com/thephpleague/flysystem)
+- [league/flysystem-aws-s3-v3](https://github.com/thephpleague/flysystem-aws-s3-v3)
+- [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php)
 
 Laravel should already have the `league/flysystem` package installed, but you may need to install the others. I've added them as dependencies to this package, so it should be all automatic for you anyway.
 
