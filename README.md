@@ -1,6 +1,8 @@
-![](https://github.com/sburkett/laravel-s3-tools/raw/master/doc/laravel-s3-tools-logo.png)
+<p align="center">
+  <img src="https://github.com/sburkett/laravel-s3-tools/raw/master/doc/laravel-s3-tools-logo.png">
+</p>
 
-# Laravel S3 Tools
+# Overview
 
 This Laravel package contains additional functionality not currently in Laravel for interfacing with Amazon's S3 service. In particular, there are methods for dealing with versioned objects within S3. It simply extends the existing core classes to add support for versioning in S3, and is tied into the `Storage` facade for convenience. It was designed to be a drop-in replacement, and is backwards compatible with the core functionality, so there shouldn't be any conflicts. I developed this package originally for my own need to deal with versioned objects in S3 and wanted the convenience of Laravel's `Storage` facade.
 
