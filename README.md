@@ -40,7 +40,7 @@ try {
 ... instead of this:
 
 ```php
-$file = Storage::disk('s3-tools')->getVersion('fiWFsPPFwbvlGh37rB9IaZYkO4pzOgWGz')->get('myfile.png');
+$file = Storage::disk('s3-tools')->getVersion($versionId)->get('myfile.png');
 ```
 ... then that's on you. Have fun. :)
 
@@ -91,7 +91,7 @@ AWS_BUCKET=<YOUR BUCKET NAME>
 If you aren't sure what value to use in `AWS_DEFAULT_REGION`, [check this page](https://docs.aws.amazon.com/general/latest/gr/rande.html) for more information (use the value shown in the `Region` column in the table on that page.
 
 #### S3 Tools Disk Name
-By default, this package will use a disk name of `s3-tools` (see section below on configuring that). If you'd like to rename it to something else, you can use the `S3_TOOLS_DISK_NAME` environment variable in your `.env` file, as show below.
+By default, this package will use a disk name of `s3-tools`. If you'd like to rename it to something else, you can use the `S3_TOOLS_DISK_NAME` environment variable in your `.env` file, as show below.
 
 ```
 S3_TOOLS_DISK_NAME="diskname"
