@@ -16,7 +16,7 @@
     },
 		"autoload": {
 				"psr-4": {
-						"Incursus\\laravel-s3-tools\\": "src/"
+						"Incursus\\LaravelS3Tools\\": "src/"
 				}
 		}
 
