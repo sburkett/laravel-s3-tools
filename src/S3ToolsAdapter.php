@@ -63,6 +63,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 			$options = [
 				'Bucket' => $this->bucket,
 				'Key'    => $this->applyPathPrefix($path),
+				'Prefix' => $path,
 			];
 
 			//if (isset($versionId))
@@ -89,7 +90,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
       	if( count($versionList))
       	{
         	$versions = [];
-	
+
         	foreach($response['Versions'] as $r)
           	$versions[] = [
             	'versionId' => $r['VersionId'],
@@ -97,7 +98,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
             	'isLatest' => $r['IsLatest'],
             	'dateModified' => $r['LastModified']
           	];
-	
+
         	return $versions;
       	}
 			}
@@ -255,7 +256,7 @@ class S3ToolsAdapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter // AbstractA
 			$result = $this->s3Client->execute($command);
 
 			if($result) return $result;
-	
+
 			return null;
 		}
 }
