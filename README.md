@@ -159,7 +159,7 @@ This it the `TL;DR` section. The following are the methods available to you with
 A list of available versions of an object (file) stored in S3 can be retrieved and processed as follows.  The returned list of versions will appear in reverse-chronological order based on the date last modified. The most recent version (the latest version) will always be the first element (0th) in the returned array.
 
 ```php
-$versions = Storage::disk('s3-tools')->getVersions('myfile.png');
+$versions = Storage::disk('s3-tools')->getObjectVersions('myfile.png');
 
 foreach($versions as $v)
 {
@@ -201,7 +201,7 @@ return response($file)->header('Content-Type', 'image/png');
 
 ### Fetch a specific version of an object
 
-However, unlike Laravel, it can also be used to specify a specific version of an object that you wish to retrieve. The `versionId` field returned by `getVersions()` can be used to retrieve a specific version of an object from S3:
+However, unlike Laravel, it can also be used to specify a specific version of an object that you wish to retrieve. The `versionId` field returned by `getObjectVersions()` can be used to retrieve a specific version of an object from S3:
 
 ```php
 // Fetch the image from S3
@@ -280,7 +280,7 @@ $file = Storage::disk('s3-tools')->get('myfile.png');
 ### Execute Other Amazon S3 API Commands
 Using the `command()` method, you can execute any other API call to S3 as well, and there are a great number of them. However, you will be responsible for not only passing in all of the appropriate options, but also parsing the response. All responses returned via this method are sent back to you in raw format. In some senses, this is a bit extraneous, since you could just use the offical S3 API to execute them, but I've included it here just to provide a method of consistency should you decide to use this package for other things.
 
-Consider the following example which does the same thing as the built-in `getVersions()` method of this package:
+Consider the following example which does the same thing as the built-in `getObjectVersions()` method of this package:
 
 ```php
 $result = Storage::disk('s3-tools')->command('ListObjectVersions', [
