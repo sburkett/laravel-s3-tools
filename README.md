@@ -62,7 +62,7 @@ You can install the package via composer:
 composer require incursus/laravel-s3-tools
 ```
 
-Once it is installed, you will need to add the service provider, as usual, to your `config/app.php` file:
+Once it is installed, you will need to add the service provider, as usual, to your `config/app.php` file (for pre 5.5 versions of Laravel that do not support auto-discovery):
 
 ```php
 	...
@@ -124,15 +124,15 @@ return [
         ],
 
 				// Add this entry
-        env('S3_TOOLS_DISK_NAME', 's3-tools') => [
-            'driver' => env('S3_TOOLS_DISK_NAME', 's3-tools'),
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
+				env('S3_TOOLS_DISK_NAME', 's3-tools') => [
+          'driver' => env('S3_TOOLS_DISK_NAME', 's3-tools'),
+          'key' => env('AWS_ACCESS_KEY_ID'),
+          'secret' => env('AWS_SECRET_ACCESS_KEY'),
+          'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+          'bucket' => env('AWS_BUCKET'),
+          'url' => env('AWS_URL'),
         ],
-    ],
+      ],
 	...
 ```
 
