@@ -14,56 +14,57 @@ use Illuminate\Support\ServiceProvider;
 
 class S3ToolsServiceProvider extends ServiceProvider
 {
-		protected $diskName;
+	protected $diskName;
+	protected $configPrefix;
 
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-			$this->diskName = env('S3_TOOLS_DISK_NAME', 's3-tools');
+	/**
+	 * Perform post-registration booting of services.
+	 *
+	 * @return void
+	*/
+	public function boot()
+	{
+		$this->diskName = env('S3_TOOLS_DISK_NAME', 's3-tools');
+		$this->configPrefix = 'filesystems.disks.' . $this->diskName;
 
-			Storage::extend($this->diskName, function ($app, $config) {
-				// TODO - this config does not need to be hardcoded obviously lol
-				$s3Config = [
-					"driver" => "s3-tools",
-					"key" => env('AWS_ACCESS_KEY_ID'),
-					"secret" => env('AWS_SECRET_ACCESS_KEY'),
-					"region" => env('AWS_DEFAULT_REGION'),
-					"bucket" => env('AWS_BUCKET'),
-					"url" => null,
-					"version" => "latest",
-					"credentials" => [
-						"key" => env('AWS_ACCESS_KEY_ID'),
-						"secret" => env('AWS_SECRET_ACCESS_KEY')
-					]
-				];
+		Storage::extend($this->diskName, function ($app, $config) {
 
-				$root = $s3Config['root'] ?? null;
-				$options = $config['options'] ?? [];
+			$s3Config = [
+				"driver" => $this->diskName,
+				"key" => config($this->configPrefix . '.key'),
+				"secret" => config($this->configPrefix . '.secret'),
+				"region" => config($this->configPrefix . '.region'),
+				"bucket" => config($this->configPrefix . '.bucket'),
+				"url" => null,
+				"version" => "latest",
+				"credentials" => [
+					"key" => config($this->configPrefix . '.key'),
+					"secret" => config($this->configPrefix . '.secret')
+				]
+			];
 
-				$client = new S3Client( $s3Config, $s3Config['bucket'], $root, $options );
+			$root = $s3Config['root'] ?? null;
+			$options = $config['options'] ?? [];
 
-				$adapter = new S3ToolsAdapter($client, $s3Config['bucket']);
+			$client = new S3Client( $s3Config, $s3Config['bucket'], $root, $options );
 
-				$filesystem = new S3ToolsFilesystem($adapter);
-				$filesystem->diskName = $this->diskName;
+			$adapter = new S3ToolsAdapter($client, $s3Config['bucket']);
 
-				return $filesystem;
-			});
+			$filesystem = new S3ToolsFilesystem($adapter);
+			$filesystem->diskName = $this->diskName;
 
-    }
+			return $filesystem;
+		});
+	}
 
-    /**
-     * Register bindings in the container.
-     *
-     * @return void
-     */
-    public function register()
-    {
-			//
-    }
+	/**
+	 * Register bindings in the container.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		//
+	}
 
 }
