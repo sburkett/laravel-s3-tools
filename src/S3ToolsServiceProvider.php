@@ -50,7 +50,7 @@ class S3ToolsServiceProvider extends ServiceProvider
 
 			$adapter = new S3ToolsAdapter($client, $s3Config['bucket']);
 
-			$filesystem = new S3ToolsFilesystem($adapter);
+			$filesystem = new S3ToolsFilesystem($adapter, ['disable_asserts' => (bool) $config['disable_asserts']]);
 			$filesystem->diskName = $this->diskName;
 
 			return $filesystem;
